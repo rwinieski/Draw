@@ -136,7 +136,7 @@ spec:
   #           port: 8000
 
   tls:
-    enableOnDefaultAppServers: true
+    enableOnDefaultAppServers: false
 
   markLogicGroups:
   - replicas: 3
