@@ -2,12 +2,12 @@ apiVersion: marklogic.progress.com/v1
 kind: MarklogicCluster
 metadata:
   labels:
-    app.kubernetes.io/name: marklogiccluster
+    app.kubernetes.io/name: ml-primary
     app.kubernetes.io/instance: marklogiccluster-sample
     app.kubernetes.io/part-of: marklogic-operator-kubernetes
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: marklogic-kubernetes-operator
-  name: ml-cluster
+  name: ml-primary
   namespace: ml
 spec:
   image: "progressofficial/marklogic-db:11.3.1-ubi-rootless-2.1.1"
@@ -57,8 +57,8 @@ spec:
       ## Ingress labels
       ## ref: https://kubernetes.io/docs/concepts/overvsiew/working-with-objects/labels/
       labels:
-        app.kubernetes.io/name: marklogiccluster
-        app.kubernetes.io/instance: marklogiccluster
+        app.kubernetes.io/name: ml-primary
+        app.kubernetes.io/instance: ml-primary
     
       ## Ingress annotations
       ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
@@ -66,19 +66,19 @@ spec:
         alb.ingress.kubernetes.io/healthcheck-port: '443'
         alb.ingress.kubernetes.io/healthcheck-path: /adminUI
         alb.ingress.kubernetes.io/success-codes: '200-401'
-        alb.ingress.kubernetes.io/load-balancer-name: mldemo
+        alb.ingress.kubernetes.io/load-balancer-name: ml-primary
         alb.ingress.kubernetes.io/scheme: internet-facing
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
         alb.ingress.kubernetes.io/target-group-attributes: load_balancing.algorithm.type=least_outstanding_requests
         alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:308453789681:certificate/4c722368-cdac-4165-9934-522343edde12
         alb.ingress.kubernetes.io/target-type: ip
-        alb.ingress.kubernetes.io/group.name: mldemo-group
+        alb.ingress.kubernetes.io/group.name: ml-primary-group
         alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=600,routing.http.xff_header_processing.mode=append
 
       # Ingress hosts
       # add default hosts and additional hosts
       # ref: https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-rules
-      host: ""
+      host: "ml-cluster.ml-kube.com"
       additionalHosts: []
     
   #     ## Ingress TLS
@@ -143,24 +143,24 @@ spec:
     haproxy:
       enabled: true
       pathBasedRouting: true
-    name: dnode
+    name: ml-primary
     groupConfig:
-      name: dnode
+      name: ml-primary
       enableXdqpSsl: true
     isBootstrap: true
     persistence:
       enabled: true
       size: 50Gi
       storageClassName: gp3
-  - replicas: 2
-    name: enode
-    haproxy:
-      enabled: true
-    persistence:
-      enabled: true
-      size: 25Gi
-      storageClassName: gp3
-    groupConfig:
-      name: enode
-      enableXdqpSsl: true
-    isBootstrap: false
+  # - replicas: 2
+  #   name: enode
+  #   haproxy:
+  #     enabled: true
+  #   persistence:
+  #     enabled: true
+  #     size: 25Gi
+  #     storageClassName: gp3
+  #   groupConfig:
+  #     name: enode
+  #     enableXdqpSsl: true
+  #   isBootstrap: false
