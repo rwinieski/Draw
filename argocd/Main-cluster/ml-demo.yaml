@@ -78,7 +78,7 @@ spec:
       # Ingress hosts
       # add default hosts and additional hosts
       # ref: https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-rules
-      host: "ml-cluster.ml-kube.com"
+      host: "ml-primary.ml-kube.com"
       additionalHosts: []
     
   #     ## Ingress TLS
