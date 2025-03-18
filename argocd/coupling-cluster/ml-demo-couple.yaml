@@ -2,7 +2,7 @@ apiVersion: marklogic.progress.com/v1
 kind: MarklogicCluster
 metadata:
   labels:
-    app.kubernetes.io/name: marklogiccluster
+    app.kubernetes.io/name: ml-demo
     app.kubernetes.io/instance: marklogiccluster-sample
     app.kubernetes.io/part-of: marklogic-operator-kubernetes
     app.kubernetes.io/managed-by: kustomize
@@ -25,6 +25,8 @@ spec:
   ## It also support multi-statement transaction and ODBC connections.  
   ## Uncomment the following lines to enable HAProxy configuration
   haproxy:
+    label:
+      app.kubernetes.io/name: ml-demo
     enabled: true
     pathBasedRouting: true
     frontendPort: 443
@@ -57,8 +59,8 @@ spec:
       ## Ingress labels
       ## ref: https://kubernetes.io/docs/concepts/overvsiew/working-with-objects/labels/
       labels:
-        app.kubernetes.io/name: marklogiccluster
-        app.kubernetes.io/instance: marklogiccluster
+        app.kubernetes.io/name: ml-demo
+        app.kubernetes.io/instance: ml-demo
     
       ## Ingress annotations
       ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
